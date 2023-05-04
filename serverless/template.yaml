@@ -9,7 +9,7 @@ Globals:
       AllowHeaders: "'*'"
       AllowOrigin: "'*'"
   Function:
-    Runtime: nodejs12.x
+    Runtime: nodejs16.x
     Timeout: 30
     MemorySize: 128
 
@@ -21,9 +21,50 @@ Resources:
       Description: Dependencies for sam app [ivs-simple-chat-backend]
       ContentUri: dependencies/
       CompatibleRuntimes:
-        - nodejs12.x
+        - nodejs16.x
       LicenseInfo: "MIT"
       RetentionPolicy: Retain
+
+  # This is a Lambda function config associated with the source code: chat-event.js
+  liveListFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/channel-list.list
+      Description: A function that returns a list of available channels
+      Layers:
+        - !Ref IvsChatLambdaRefLayer
+      Policies:
+        - Statement:
+            Effect: Allow
+            Action:
+              - ivschat:*
+            Resource: "*"
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /live/list
+            Method: GET
+            
+  liveEventFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/channel-create.handler
+      Description: A function that creates a live channel
+      Layers:
+        - !Ref IvsChatLambdaRefLayer
+      Policies:
+        - Statement:
+            Effect: Allow
+            Action:
+              - ivschat:*
+            Resource: "*"
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /live/event
+            Method: POST
   # This is a Lambda function config associated with the source code: chat-auth.js
   chatAuthFunction:
     Type: AWS::Serverless::Function

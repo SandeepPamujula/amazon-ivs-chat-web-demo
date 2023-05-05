@@ -1,7 +1,6 @@
 
 const mongoose = require("mongoose");
-const uri =
-  "mongodb+srv://root:hCOrFLE4VDX7lfCX@cluster0.nwhrls4.mongodb.net/ivs-live";
+const uri =  "";
 const connectDB = async () => {
     const conn = mongoose.connect(uri, {
       // and tell the MongoDB driver to not wait more than 5 seconds

@@ -65,6 +65,26 @@ Resources:
           Properties:
             Path: /live/event
             Method: POST
+  
+  timedMetadataFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: src/put-metadata.handler
+      Description: A function that sends a message to a live channel
+      Layers:
+        - !Ref IvsChatLambdaRefLayer
+      Policies:
+        - Statement:
+            Effect: Allow
+            Action:
+              - ivschat:*
+            Resource: "*"
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /live/metadata
+            Method: POST
   # This is a Lambda function config associated with the source code: chat-auth.js
   chatAuthFunction:
     Type: AWS::Serverless::Function

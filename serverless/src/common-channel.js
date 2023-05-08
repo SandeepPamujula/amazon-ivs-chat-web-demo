@@ -1,6 +1,6 @@
 
 const mongoose = require("mongoose");
-const uri =  "";
+const uri ="add mongo server url";
 const connectDB = async () => {
     const conn = mongoose.connect(uri, {
       // and tell the MongoDB driver to not wait more than 5 seconds
@@ -35,6 +35,8 @@ const connectDB = async () => {
         eventName: String,
         chatRoomId: String,
         chatRegion: String,
+        channelName: String,
+        channelArn: String
       },
       {
         capped: { size: 1024 },

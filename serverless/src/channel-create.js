@@ -40,9 +40,12 @@ exports.handler = async (event, context) => {
     db = await connectDB();
   }
   const body = JSON.parse(event.body);
-
+  const name = body.name.replace(/ /g, "-");
+  console.log("-- >name :: ", name)
+  body.name = name;
   const result = await createChannel(body);
-  const chatResp = await createChatRoom(body.name);
+  
+  const chatResp = await createChatRoom(name);
   const doc = await db.events.create({
     broadcastStreamUrl: `rtmps://${result.channel.ingestEndpoint}:443/app/`,
     secret: `${result.streamKey.value}`,
@@ -51,6 +54,8 @@ exports.handler = async (event, context) => {
     duration: body.duration,
     author: body.author,
     eventName: body.name,
+    channelName: `${result.channel.name}`,
+    channelArn: `${result.channel.arn}`,
     chatRoomId: chatResp.arn,
     //"arn:aws:ivschat:ap-south-1:198839483732:room/9aLQxLWRJiMr",
     // chatToken: 'dfasdadf',

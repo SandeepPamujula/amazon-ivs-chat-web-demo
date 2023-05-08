@@ -4,3 +4,4 @@ log.txt
 output.yaml
 out.yaml
 *.tgz
+.aws-sam

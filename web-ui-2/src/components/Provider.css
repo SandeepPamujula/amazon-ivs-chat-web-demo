@@ -1,0 +1,60 @@
+.buttonBox {
+    margin: 10px 10px;
+    display: flex;
+    flex-wrap: wrap;
+}
+.tab {
+    width: 49%;
+    background-color: antiquewhite;
+    color: rgb(125, 0, 0);
+    padding: 10px;
+    margin: .5%;
+    text-align: center;
+    cursor: pointer;
+
+}
+.tab.active {
+    border-bottom: 2px solid red;
+}
+.inputLabel {
+    color: red;
+    margin: 10px;
+}
+.inputField {
+    margin: 5px;
+    padding: 8px;
+}
+.listContainer {
+    margin: 10px;
+    padding-block-start: 15px;
+    padding: 10px;
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    justify-content: space-evenly;
+    height: 300px;
+    width: 100%;
+    overflow-y: scroll;
+}
+.listItems {
+    flex-direction: row;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 10px;
+}
+.item {
+    width: 20%;
+    
+}
+.joinButton {
+    background-color: antiquewhite;
+    color: brown;
+    padding: 10px;
+    border-radius: 10px;
+    text-align: center;
+    cursor: pointer;
+}
+.listItem {
+    margin: 10px;
+}

@@ -25,6 +25,8 @@ exports.list = async (event, context) => {
     eventName: true,
     chatRoomId: true,
     chatRegion: true,
+    channelName: true,
+    channelArn: true,
     _id: false,
   };
   if (query.provider == "true") {

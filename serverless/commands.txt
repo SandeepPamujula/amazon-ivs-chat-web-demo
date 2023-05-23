@@ -1,0 +1,87 @@
+
+aws ivs-realtime create-stage --name "ivs-hm-live-70-stage"
+arn:aws:ivs:ap-south-1:198839483732:stage/fULyW1q6NxiV
+aws ivs-realtime create-participant-token --stage-arn arn:aws:ivs:ap-south-1:198839483732:stage/fULyW1q6NxiV
+eyJhbGciOiJLTVMiLCJ0eXAiOiJKV1QifQ.eyJleHAiOjE2ODM5MjgyODIsImlhdCI6MTY4Mzg4NTA4MiwianRpIjoicVZqV1BVNVZJVVQwIiwicmVzb3VyY2UiOiJhcm46YXdzOml2czphcC1zb3V0aC0xOjE5ODgzOTQ4MzczMjpzdGFnZS9mVUx5VzFxNk54aVYiLCJ0b3BpYyI6ImZVTHlXMXE2TnhpViIsImV2ZW50c191cmwiOiJ3c3M6Ly9hcC1zb3V0aC0xLmV2ZW50cy5saXZlLXZpZGVvLm5ldCIsIndoaXBfdXJsIjoiaHR0cHM6Ly81NGI4NjRjMTNkNDMuZ2xvYmFsLndoaXAubGl2ZS12aWRlby5uZXQiLCJ1c2VyX2lkIjoic2FuZGU2IiwiYXR0cmlidXRlcyI6eyJ1c2VybmFtZSI6IlNhbmRlZXAifSwiY2FwYWJpbGl0aWVzIjp7ImFsbG93X3B1Ymxpc2giOnRydWUsImFsbG93X3N1YnNjcmliZSI6dHJ1ZX0sInZlcnNpb24iOiIwLjMifQ.MGYCMQDJhKtfgTuYgBjOzFAuFrzZeSEPCrnqzJNSnDm2RNgAnGSd1Db0xGOxaZ8fC9d1DL8CMQCtJsUN414UMxusCsgad0YG5fIH-3LTwTNR7acQDRQmzW4YdQDOVH9ZZSOw2kbeHtI
+
+
+Outputs:
+AmazonIVSMultiHostServerlessStack.AmazonIVSMultiHostDemoApiEndpoint11FFCF56 = https://7yoy2lcdd7.execute-api.ap-south-1.amazonaws.com/prod/
+Stack ARN:
+arn:aws:cloudformation:ap-south-1:198839483732:stack/AmazonIVSMultiHostServerlessStack/6f9a1e60-f137-11ed-89e6-0a9ca7c189ae
+
+
+mongodb+srv://<username>:<password>@cluster0.nwhrls4.mongodb.net/test
+mongodb+srv://root:hCOrFLE4VDX7lfCX@cluster0.nwhrls4.mongodb.net/ivs-live
+
+DOCKER_HOST=unix:///Users/deepu/.docker/run/docker.sock sam local start-api
+
+sam build 
+
+aws s3api create-bucket --bucket ivs-chat-sp-4 --region ap-south-1 \
+--create-bucket-configuration LocationConstraint=ap-south-1
+
+sam package --template-file template.yaml \
+  --s3-bucket ivs-chat-sp-4 \
+  --output-template-file output.yaml
+
+sam deploy --template-file ./output.yaml \
+--stack-name ivs-stack-sp-10 \
+--capabilities CAPABILITY_IAM \
+--region ap-south-1
+
+
+sam update-stack --template-file ./output.yaml \
+--stack-name ivs-stack-sp-1 \
+--capabilities CAPABILITY_IAM \
+--region ap-south-1
+
+aws cloudformation delete-stack --stack-name ivs-stack-sp-4
+
+sam local invoke MyLambda -e event.json
+
+
+POST /live/event
+{
+    "eventName": "Coin1",
+    "eventDateTime": 1232123123,
+    "duration": 60,
+    "author": "Abhi SP",
+    "chatRoom": "coin-1-chat"
+}
+
+Response:
+{
+    "status": "ok",
+    "result": {
+        "broadcastStreamUrl": "rtmps://54b864c13d43.global-contribute.live-video.net:443/app/",
+        "secert":"sfasdsd",
+        "playbackUrl": "https://fcc3ddae59ed.us-west-2.playback.live-video.net/api/video/v1/us-west-2.893648527354.channel.DmumNckWFTqz.m3u8",
+        "eventDateTime": 1232123123,
+        "duration": 60,
+        "author": "Abhi SP",
+        "chatRoomId": "coin-1-chat",
+        "chatToken": "dfasdadf",
+        "chatRegion": "us-west-2",
+    }
+}
+
+=====================================
+GET /live/event?provider=true
+
+Response:
+{
+    "status": "ok",
+    "result": [{
+        "broadcastStreamUrl": "", // provider=true
+        "secert":"sfasdsd",  // provider=true,
+        "playbackUrl": "https://fcc3ddae59ed.us-west-2.playback.live-video.net/api/video/v1/us-west-2.893648527354.channel.DmumNckWFTqz.m3u8",
+        "eventDateTime": 1232123123,
+        "author": "Abhi SP",
+        "chatRoomId": "coin-1-chat",
+        "chatToken": "dfasdadf",
+        "chatRegion": "us-west-2",
+        
+    }]
+}
+=============================================

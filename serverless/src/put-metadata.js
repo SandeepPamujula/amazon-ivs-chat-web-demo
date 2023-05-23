@@ -8,22 +8,6 @@ const Ivs = new AWS.IVS({
 // const putMetadata = async (body) => {
 exports.handler = async (event, context) => {
   const body = JSON.parse(event.body);
-
-  const input = {
-    channelArn: body.channelArn,
-    metadata: JSON.stringify(body.metadata),
-  };
-  let output;
-  try {
-    output = await Ivs.putMetadata(input).promise();
-  } catch (e) {
-    console.error(e);
-    if (e.name === "ChannelNotBroadcasting") {
-      output = { offline: true };
-    } else {
-      throw new Error(e);
-    }
-  }
   const response = {
     statusCode: 200,
     headers: {
@@ -31,8 +15,30 @@ exports.handler = async (event, context) => {
       "Access-Control-Allow-Origin": "*",
       "Access-Control-Allow-Methods": "POST",
     },
-    body: output,
+    body: "",
   };
+
+  const input = {
+    channelArn: body.channelArn,
+    metadata: JSON.stringify(body.metadata),
+  };
+  let output = { "offline": true };
+  try {
+    output = await Ivs.putMetadata(input).promise();
+    console.log("---- output")
+    console.log(output);
+    output = { "offline": false };
+  } catch (e) {
+    console.error(e);
+    response.statusCode = 500;
+    output = { "offline": true };
+    // if (e.name === "ChannelNotBroadcasting") {
+      
+    // } else {
+    //   throw new Error(e);
+    // }
+  }
+  response.body = JSON.stringify(output);
   return response;
 };
 
